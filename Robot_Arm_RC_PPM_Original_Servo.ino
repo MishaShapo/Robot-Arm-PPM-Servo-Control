@@ -79,11 +79,12 @@ void loop()
       continue;
     } else if(CRCArduinoPPMChannels::getChannel(channels[i])) {
       deltaPWM = map(CRCArduinoPPMChannels::getChannel(channels[i]),1000,2000,500,2500) - prevPWM[i];
-      curPWM[i] = (abs(deltaPWM) > 10) ? curPWM[i] + deltaPWM : (i == 3) ? baseVal : curPWM[i];
+      curPWM[i] = (abs(deltaPWM) > 5) ? curPWM[i] + deltaPWM : (i == 3) ? baseVal : curPWM[i];
       Serial.print("Sending PWM to servo with channel : ");
       Serial.print(channels[i]);
       Serial.print(" with PWM of : ");
       Serial.println(curPWM[i]);
+      prevPWM[i] = curPWM[i];
       servos[i].writeMicroseconds(curPWM[i]);
     }
   }
